@@ -1,0 +1,84 @@
+/* css for midterm project */
+body {
+		margin: 30px auto 30px auto;
+		background-color: #DEDEDE;
+		min-width: 400px;
+		max-width: 600px;
+}
+
+.first {
+		margin-top: 15px;
+}
+
+.round_border, .round_border_thin, .stupid_button_border, .header_border, .link{
+		margin-bottom: 15px;
+		border-radius: 10px;
+		overflow: hidden;
+}
+
+.round_border, .round_border_thin, .header_border, .link {
+		background-color: #FFFFFF;
+}
+
+.round_border, .stupid_button_border, .header_border, .link {
+		border: 2px solid black;
+}
+
+.round_border, .round_border_thin, .stupid_button_border {
+		padding: 15px 15px 15px 15px;
+}
+
+.round_border_thin {
+		border: 1px solid black;
+}
+
+.header_border, .link {
+		padding: 5px 5px 5px 5px;
+		text-align: center;
+}
+
+.stupid_button_border {
+		background-color: gray;
+		color: white;
+}
+
+.round_border:hover, .round_border_thin:hover, .header_border:hover, .link:hover{
+		background-color: #DEDEDE;
+}
+
+.stupid_button_border:hover {
+		background-color: #CDCDCD;
+		color: black;
+}
+
+.stupid_button_border:focus, .link:focus {
+		border: 2px dotted blue;
+}
+
+form {
+		margin: 0 0 0 0;
+}
+
+p, h1, h2, h3, a, li, script {
+		font-family: 'Roboto', sans-serif;
+		margin-top: 0px;
+		margin-bottom: 0px;
+}
+
+.info p{
+		padding-left: 1em; 
+}
+
+script{
+		display: block;
+		font-size: 18px;
+}
+
+.delete {
+		background-color: #DD0000;
+		border: 1px solid black;
+}
+
+.delete:hover {
+		background-color: #00DDDD;
+}
