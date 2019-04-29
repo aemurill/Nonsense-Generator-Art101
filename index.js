@@ -16,7 +16,7 @@
 //get input string
 function getString(){	
 	var string = document.getElementById("input").value; //get string from input
-	console.log(string);
+	console.log("[" + string + "]");
 	console.log("get - complete");
 	return string;
 }
@@ -24,6 +24,8 @@ function getString(){
 //return Nonsense to page
 function returnNonsense(string){
 	//return string to page
+	document.getElementById("output").innerHTML = string;
+	console.log("[" + string + "]");
 	console.log("return - complete");
 }
 
