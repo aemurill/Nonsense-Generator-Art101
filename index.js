@@ -14,8 +14,9 @@
  */
 
 //get input string
-function getString(){
-	var string = ""; //get string from input
+function getString(){	
+	var string = document.getElementById("input").value; //get string from input
+	console.log(string);
 	console.log("get - complete");
 	return string;
 }
