@@ -16,7 +16,7 @@
 //get input string
 function getString(){	
 	var string = document.getElementById("input").value; //get string from input
-	console.log(string);
+	console.log("Input is: [" + string + "]");
 	console.log("get - complete");
 	return string;
 }
@@ -24,6 +24,8 @@ function getString(){
 //return Nonsense to page
 function returnNonsense(string){
 	//return string to page
+	document.getElementById("output").innerHTML = string;
+	console.log("Output is: [" + string + "]");
 	console.log("return - complete");
 }
 
@@ -39,6 +41,7 @@ function nonsenseGen(){
 	var string = getString();
 	string = mutilate(string);
 	returnNonsense(string);
-	console.log("done");
+	console.log("DONE");
+	console.log(""); //console spacing
 }
  
