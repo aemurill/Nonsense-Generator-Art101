@@ -13,8 +13,6 @@
  *  3) Return string to output
  */
 
-var alphabet = "abcdefghijklmnopqrstuvexyz";
-
 //get input string
 function getString(){	
 	var string = document.getElementById("input").value; //get string from input
@@ -23,16 +21,8 @@ function getString(){
 	return string;
 }
 
-//return Nonsense to page
-function returnNonsense(string){
-	//return string to page
-	document.getElementById("output").innerHTML = string;
-	console.log("Output is: [" + string + "]");
-	console.log("return - complete");
-}
-
 //mutilate string
-function mutilate(string){
+function mutilate_content(string){
 	//do mutilation
 
 	//So, the randomletter() function might be ganked, because apparently methods within functions is a no-go in JavaScript.
@@ -285,7 +275,6 @@ function mutilate(string){
 			mutilatedString = mutilatedString + "You've found a hidden message. But I only have two sentences to tell you it.";
 		}
 	}
-	console.log("mutilation - complete");
 	return mutilatedString;
 }
 
@@ -295,6 +284,75 @@ function randomletter(){
 	chosenletter = Math.round(chosenletter);
 	translatedletter = alphabet.charAt(chosenletter);
 	return translatedletter;
+}
+
+
+//return Nonsense to page
+function returnNonsense(string){
+	//return string to page
+	document.getElementById("output").innerHTML = string;
+	console.log("Output is: [" + string + "]");
+	console.log("return - complete");
+}
+
+//https://stackoverflow.com/questions/57803/how-to-convert-decimal-to-hexadecimal-in-javascript
+function decimalToHexString(number){
+  if (number < 0){
+    number = 0xFFFFFFFF + number + 1;
+  }
+  return number.toString(16).toUpperCase();
+}
+
+function mutilate_diacritial(string){
+	//diacriticals are from 0300 to 036F
+	var output = "";
+	for(i = 0; i < string.length; i++){
+		var num_prefix = Math.floor(Math.random() * 10);
+		var num_suffix = Math.floor(Math.random() * 10);
+		for(j = 0; j < num_prefix; j++){
+			//num is some random integer from 0 + 768 (0x0300) to 111 + 768 (0x36F) in Decimal
+			var num = Math.floor(Math.random() * 112) + 768; 
+			var diacrit = String.fromCharCode(num);
+			output += diacrit;
+		}
+		var sub = string.substring(i, i+1);
+		output += sub;
+		for(j = 0; j < num_suffix; j++){
+			//num is some random integer from 0 + 768 (0x0300) to 111 + 768 (0x36F) in Decimal
+			var num = Math.floor(Math.random() * 112) + 768; 
+			var diacrit = String.fromCharCode(num);
+			output += diacrit;
+		}	
+	}
+	return output;
+}
+
+//must be last or otherwise have span tags UN-modified
+function mutilate_tag(string){
+	var output = "";
+	for(i = 0; i < string.length; i++){
+		//MUTILATE COLOR
+		//num is some random integer from 0 to 16777215 (0xFFFFFF), 
+		var num = Math.floor(Math.random() * 16777215) + 1;
+		var hex = decimalToHexString(num);
+		//size is some random number from 1 to 2
+		var size = Math.random() * 2 + 1;
+		var sub = string.substring(i, i+1);
+		output += "<span style=\"color: #" + hex + ";" +
+				"font-size:" + size + "em\">" + sub + "</span>";
+	}
+	return output;
+}
+
+//mutilate string
+function mutilate(string){
+	//do mutilation
+	var output = string.repeat(1);
+    output = mutilate_content(output);
+	output = mutilate_diacritial(output);
+	output = mutilate_tag(output);
+    console.log("mutilation - complete");
+	return output;
 }
 
 // "main"
