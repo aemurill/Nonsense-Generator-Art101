@@ -24,6 +24,8 @@ function getString(){
 }
 
 //mutilate string
+//takes string
+//returns string
 function mutilate_content(string){
 	//do mutilation
 
@@ -276,6 +278,7 @@ function mutilate_content(string){
 	return mutilatedString;
 }
 
+//returns a random letter
 function randomletter(){
 	var translatedletter;
 	var chosenletter = Math.random() * 25;
@@ -294,6 +297,7 @@ function returnNonsense(string){
 }
 
 //https://stackoverflow.com/questions/57803/how-to-convert-decimal-to-hexadecimal-in-javascript
+//converts decimal numbers to a hex string
 function decimalToHexString(number){
   if (number < 0){
     number = 0xFFFFFFFF + number + 1;
@@ -301,6 +305,9 @@ function decimalToHexString(number){
   return number.toString(16).toUpperCase();
 }
 
+//mutilates string via adding random combining diacritcal marks to each character
+//takes string
+//returns string
 function mutilate_diacritial(string){
 	//diacriticals are from 0300 to 036F
 	var output = "";
@@ -326,6 +333,9 @@ function mutilate_diacritial(string){
 }
 
 //must be last or otherwise have span tags UN-modified
+//mutilates string by adding style tags around each character with randomized color and font-size values
+//takes string
+//returns string
 function mutilate_tag(string){
 	var output = "";
 	for(i = 0; i < string.length; i++){
@@ -342,7 +352,9 @@ function mutilate_tag(string){
 	return output;
 }
 
-//mutilate string
+//mutilate string driver
+//takes string
+//returns string
 function mutilate(string){
 	//do mutilation
 	var output = string.repeat(1);
@@ -354,6 +366,7 @@ function mutilate(string){
 }
 
 // "main"
+// runs on click
 function nonsenseGen(){
 	var string = getString();
 	string = mutilate(string);

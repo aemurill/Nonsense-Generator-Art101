@@ -9,7 +9,7 @@
 
 		<!-- PAGE TITLE -->
 		<div class="round_border">
-			<h1>NONSENSE GENERATOR</h1>
+			<h1>N͖̼̹̖̖͚͚̓ͦ̓Oͬ́ͨ͢N̺̯̠̟̭ͩ̏̒̓̔ͮ̄͢S͔͇̳͚̼͕̦͟E͘Ñ͔͎̺̑͋ͯ̌̽S̹̠̼͕͚̟ͭ͂ͤͭͥͮ̈E̎ͫ̐̀ ̠̞̪͉̱̘̑G̨̣͖Eͤ̋́N̬̤̬̲͖͍̽̋̔ͥ̃̅͊ͅE̮̖̜ͬͫ̿̆͋̐ͩ͞R̻̭̭A̡͕̱̜ͮT͍̝͔̩ͩͨͦ͂͛̈͢ͅO̿͏̟̺̺̘͚Rͭ̌͑ͩͮ̈</h1>
 		</div>
 
 		<!-- NONSENSE GENERATOR VISUALS -->
@@ -17,7 +17,7 @@
 			<!-- INPUT -->
 			<h2 class="header_border">Input</h2>
 			<div id="input_div" class="round_border_thin">
-				<h3>Input String Here Or Something</h3>
+				<h3>Input String Here</h3>
 				<textarea id="input" rows="4" cols="50"></textarea>
 				<button id="activate" class="first" onclick="nonsenseGen()">ACTIVATE IRRATIONALITY</button>
 			</div>
@@ -28,28 +28,42 @@
 		<!-- END NONSENSE GENERATOR VISUALS -->
 		</div>
 		
-		
+		<!-- Partners -->
+		<div class="round_border">
+			<h2 class="header_border">Partners</h2>
+			<a class="link" href="https://people.ucsc.edu/~whintze/midterm">William Hintze</a>
+			<a class="link" href="https://people.ucsc.edu/~aemurill/art101/midterm">Axel Murillo</a>
+		</div>
 
 		<!-- DESIGN -->
 		<div class="round_border">
 			<h2 class="header_border">Design</h2>
 			<ul>
-				<li>WIP</li>
+				<li><b>Input & Output (Axel)</b> - A textarea was chosen in order to allow paragraph inputs to be easily viewed, and the output is constrained to a box for sheer visual effect.</li>
+				<li><b>Styling (Axel)</b> - I used my previously created HTML & CSS template for this project. Some small updates were necessary to make things look good and stay intact.</li>
+				<li><b>Diacritical Marks and Formatting (Axel)</b> - I borrowed inspiration for the diacritical marks from Tchouk's Zalgo Text Generator. I had this mix with coloration and font-size, each completely randomizing per call. Thus, the output is "mutilated" such that it will have combining marks glued to each character, as well as each character varying in size and color.</li>
+				<li><b>Content Corruption (Will)</b> - Each character from the input is replaced with some string based on character. Certain replacements have random characters mixed in.</li>
 			</ul>
 		</div>
 		
 		<!-- CHALLENGES -->
 		<div class="round_border info">
 			<h2 class="header_border">Challenges</h2>
-			<h3>Header</h3>
-			<p>WIP</p>
+			<h3>Learning (Will)</h3>
+			<p>The primary challenge here was actually just trying to learn the intricacies of Javascript as compared to Java. Personally, I found it difficult to sort out the minutae of the project -- Is that supposed to be a double quote, or a single quote? How do you interface between JS and HTML? -- regardless, the challenges weren't too various, it was mostly just a lot of legwork, putting in the different outputs.</p>
+			<h3>Random Decimals to Hex numbers (Axel)</h3>
+			<p>I spent quite a long time trying to search for ways on how to randomize hex values such that I could use them for the Unicode Diacritical Marks and the font colors.</p>
+			<h3>Troubleshooting (Axel)</h3>
+			<p>Javascript is excellent at not being clear about errors half the time. Sometimes the error is clearly explained. Sometimes I need to check Stack Overflow.</p>
 		</div>
 
 		<!-- TECH & ACHIEVES -->
 		<div class="round_border info">
 			<h2 class="header_border">Technology & Acknowledgements</h2>
-			<h3>Header</h3>
-			<p>WIP</p>
+			<h3>Zalgo Text Generator by Tchouky</h3>
+			<p><a href="http://www.eeemo.net/">Visitable here.</a> This Website was the inspiration and main source of understanding for combining diacritical marks. And while that part of the project is inspired by Techouky, I (Axel) made sure that we were using a different method by which to generate random marks, as so to not just copy. Plus, he made a table for the marks, we generate the marks utterly randomly individually.</p>
+			<h3>StackOverflow's Tod</h3>
+			<p><a href="https://stackoverflow.com/questions/57803/how-to-convert-decimal-to-hexadecimal-in-javascript">Visitable here.</a> The function 'decimalToHexString' was borrowed from here, being massively useful in regards to combining diacritical mark generation. Credit where credit is due, to "Tod".</p>
 		</div>
 
 		<!-- LINKS -->
