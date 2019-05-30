@@ -14,6 +14,11 @@
  */
 
 var alphabet = "abcdefghijklmnopqrstuvexyz";
+var language_dict = [
+		['af', 'Afrikaans'], 
+		['sq', 'Albanian' ],
+		['am', 'Amharic']
+	];
  
 //get input string
 function getString(){	
@@ -357,27 +362,57 @@ function mutilate_tag(string){
 	return output;
 }
 
+function PrepQuery(sourceText){
+	console.log(sourceText);
+	var sourceLang = 'en';
+	var targetLang = language_dict[2][0];
+	var query = "https://translate.googleapis.com/translate_a/single?client=gtx&sl=" 
+            + sourceLang + "&tl=" + targetLang + "&dt=t&q=" + encodeURI(sourceText);
+	$.getJSON(query)
+		.done(function( json ){
+			console.log("ajax success!");
+			console.log(json);
+			mutilate_B(json[0][0][0]); //continue mutilation 
+		})
+		.fail(function( xhr, status, errorThrown){
+			console.log("ajax error! " + errorThrown + " Status:" + status);
+			mutilate_B(sourceText); //defer to not translating
+		})
+		.always(function(){
+			console.log("ajax complete.");
+		});
+	return sourceText;
+}
+
 //mutilate string driver
 //takes string
 //returns string
-function mutilate(string){
+function mutilate_A(string){
 	//do mutilation
 	var output = string.repeat(1);
-    output = mutilate_content(output);
-	output = mutilate_diacritial(output);
+	output = mutilate_content(output);
+	output = PrepQuery(output);
+}
+
+function mutilate_B(string){
+	console.log(string);
+	var output = mutilate_diacritial(string);
 	output = mutilate_tag(output);
-    console.log("mutilation - complete");
-	return output;
+	console.log("mutilation - complete");
+	nonsenseGen_callback(output);
+}
+
+function nonsenseGen_callback(string){
+	returnNonsense(string);
+	console.log("DONE");
+	console.log(""); //console spacing
 }
 
 // "main"
 // runs on click
 function nonsenseGen(){
 	var string = getString();
-	string = mutilate(string);
-	returnNonsense(string);
-	console.log("DONE");
-	console.log(""); //console spacing
+	string = mutilate_A(string);
 }
  
 $(document).ready(function(){
