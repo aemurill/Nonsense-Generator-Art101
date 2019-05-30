@@ -362,6 +362,7 @@ function mutilate_tag(string){
 	return output;
 }
 
+//Source of trick: https://ctrlq.org/code/19909-google-translate-api
 function PrepQuery(sourceText){
 	console.log(sourceText);
 	var sourceLang = 'en';
