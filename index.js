@@ -17,10 +17,18 @@ var alphabet = "abcdefghijklmnopqrstuvexyz";
  
 //get input string
 function getString(){	
-	var string = document.getElementById("input").value; //get string from input
+	var string = $("#input").val(); //get string from input
 	console.log("Input is: [" + string + "]");
 	console.log("get - complete");
 	return string;
+}
+
+//return Nonsense to page
+function returnNonsense(string){
+	//return string to page
+	$("#output").html(string);
+	console.log("Output is: [" + string + "]");
+	console.log("return - complete");
 }
 
 //mutilate string
@@ -287,15 +295,6 @@ function randomletter(){
 	return translatedletter;
 }
 
-
-//return Nonsense to page
-function returnNonsense(string){
-	//return string to page
-	document.getElementById("output").innerHTML = string;
-	console.log("Output is: [" + string + "]");
-	console.log("return - complete");
-}
-
 //https://stackoverflow.com/questions/57803/how-to-convert-decimal-to-hexadecimal-in-javascript
 //converts decimal numbers to a hex string
 function decimalToHexString(number){
@@ -346,8 +345,14 @@ function mutilate_tag(string){
 		//size is some random number from 1 to 2
 		var size = Math.random() * 2 + 1;
 		var sub = string.substring(i, i+1);
-		output += "<span style=\"color: #" + hex + ";" +
-				"font-size:" + size + "em\">" + sub + "</span>";
+		//output += "<span style=\"color: #" + hex + ";" +
+		//		"font-size:" + size + "em\">" + sub + "</span>";
+		var span = $('<span>'+sub+'</span>').clone()
+						.css({
+							"color" : ("#" + hex),
+							"font-size" : (size + "em")
+						}).prop('outerHTML');
+		output += span;
 	}
 	return output;
 }
@@ -375,3 +380,6 @@ function nonsenseGen(){
 	console.log(""); //console spacing
 }
  
+$(document).ready(function(){
+	$("#activate").click(nonsenseGen);
+});
