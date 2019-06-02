@@ -29,6 +29,12 @@ function MutilationObject(heldString, offsetPosX = 0, offsetPosY = 0, langKey = 
 	this.mutilate_content = mutilate_content;
 	this.mutilate_diacritial = mutilate_diacritial;
 	this.mutilate_tag = mutilate_tag;
+	this.mutilate_language = mutilate_language;
+	this.limiter = function(){
+		//clip string max length!
+		if(this.heldString.length > 15000)
+			this.heldString = this.heldString.substring(0,14999);
+	}
 }
  
 //get input string
@@ -51,15 +57,14 @@ function returnNonsense(mutilatedString){
 	$("#output").html(mutilatedString.heldString);
 	console.log("Output is: [" + mutilatedString.heldString + "]");
 	prevString = mutilatedString;
-	console.log("New PrevString is:");
-	console.log(mutilatedString);
+	console.log("New PrevString is:", mutilatedString.heldString);
 	console.log("return - complete");
 }
 
 //METHOD for MutilationObject
 //modifies the content.
 function mutilate_content(){
-	mutilatedString = this;
+	var mutilatedString = this;
 	//var mutilatedString = {heldstring: "", offsetpositionx: 0, offsetpositiony: 0, previousheldstring: string, languageKey: 0 }
 	var pureHeldString = mutilatedString.heldString;
 	mutilatedString.heldString = ""; //SAVE OLD INTO PURE, WIPE OLD FOR WRITING
@@ -307,8 +312,10 @@ function mutilate_content(){
 		}if(pureHeldString.charAt(x)=='`'){
 			mutilatedString.heldString += "You've found a hidden message. But I only have two sentences to tell you it.";
 		}
+		mutilatedString.limiter();
 	}
-	console.log("mutilate_content DONE");
+	mutilatedString.limiter();
+	console.log("mutilate_content DONE", mutilatedString.heldString);
 }
 
 //returns a random letter
@@ -333,7 +340,7 @@ function decimalToHexString(number){
 //METHOD for MutilationObject
 //mutilates string via adding random combining diacritcal marks to each character
 function mutilate_diacritial(){
-	mutilatedString = this;
+	var mutilatedString = this;
 	//diacriticals are from 0300 to 036F
 	var pureString = mutilatedString.heldString;
 	var output = "";
@@ -353,16 +360,19 @@ function mutilate_diacritial(){
 			var num = Math.floor(Math.random() * 112) + 768; 
 			var diacrit = String.fromCharCode(num);
 			output += diacrit;
+			mutilatedString.limiter();
 		}	
 	}
 	mutilatedString.heldString = output;
+	mutilatedString.limiter();
+	console.log("Post Diacrit: ", mutilatedString.heldString);
 }
 
 //METHOD for MutilationObject
 //REQUIREMENT: must be run last or otherwise have span tags UN-modified
 //mutilates string by adding style tags around each character with randomized color and font-size values
 function mutilate_tag(){
-	mutilatedString = this;
+	var mutilatedString = this;
 	var output = "";
 	var pureString = mutilatedString.heldString;
 	
@@ -384,29 +394,6 @@ function mutilate_tag(){
 		output += span;
 	}
 	mutilatedString.heldString = output;
-}
-
-//Source of trick: https://ctrlq.org/code/19909-google-translate-api
-function PrepQuery(sourceText){
-	console.log(sourceText);
-	var sourceLang = 'en';
-	var targetLang = language_dict[2][0];
-	var query = "https://translate.googleapis.com/translate_a/single?client=gtx&sl=" 
-            + sourceLang + "&tl=" + targetLang + "&dt=t&q=" + encodeURI(sourceText);
-	$.getJSON(query)
-		.done(function( json ){
-			console.log("ajax success!");
-			console.log(json);
-			mutilate_B(json[0][0][0]); //continue mutilation 
-		})
-		.fail(function( xhr, status, errorThrown){
-			console.log("ajax error! " + errorThrown + " Status:" + status);
-			mutilate_B(sourceText); //defer to not translating
-		})
-		.always(function(){
-			console.log("ajax complete.");
-		});
-	return sourceText;
 }
 
 //mutilate string driver
@@ -432,12 +419,82 @@ function nonsenseGen_callback(string){
 	console.log("DONE");
 	console.log(""); //console spacing
 */
+
+
+/*
+function PrepQuery(sourceText){
+	console.log(sourceText);
+	var sourceLang = 'en';
+	var targetLang = language_dict[2][0];
+	var query = "https://translate.googleapis.com/translate_a/single?client=gtx&sl=" 
+            + sourceLang + "&tl=" + targetLang + "&dt=t&q=" + encodeURI(sourceText);
+	$.getJSON(query)
+		.done(function( json ){
+			console.log("ajax success!");
+			console.log(json);
+			mutilate_B(json[0][0][0]); //continue mutilation 
+		})
+		.fail(function( xhr, status, errorThrown){
+			console.log("ajax error! " + errorThrown + " Status:" + status);
+			mutilate_B(sourceText); //defer to not translating
+		})
+		.always(function(){
+			console.log("ajax complete.");
+		});
+	return sourceText;
+}*/
+
+//retrieves result
+function awaitTranslation(promise){
+	var result_string = null;
+	promise.then(
+		function(result){
+			result_string = result;
+		}
+	);
+	console.log("promise results:", result_string);
+	return result_string;
+}
+
+function mutilate_language(){
+	console.log("start lang mutilate");
+	var mutilatedString = this;
+	var sourceText = mutilatedString.heldString.substring(0,999);
+	//do json query of google translate
+	console.log(sourceText);
+	var sourceLang = 'en';
+	var targetLang = language_dict[2][0];
+	//Source of URL: https://ctrlq.org/code/19909-google-translate-api
+	var query = {
+			url: "https://translate.googleapis.com/translate_a/single?client=gtx&sl=" 
+				+ sourceLang + "&tl=" + targetLang + "&dt=t&q=" + encodeURI(sourceText),
+			dataType: 'json',
+			async: false //Breaking the rules heavily. This is discouraged.
+		};
+	var promise = 	$.ajax(query)
+		.done(function( json ){
+			console.log("ajax success!", json);
+			mutilatedString.heldString = "";
+			for (var i = 0; i < json[0][0].length; i++){
+				mutilatedString.heldString += json[0][0][i]; //continue mutilation 
+			}
+			mutilatedString.limiter();	
+		})
+		.fail(function( xhr, status, errorThrown){
+			console.log("ajax error! " + errorThrown + " Status:" + status);
+		})
+		.always(function(){
+			console.log("ajax complete.");
+		});
+}
+
   
 //takes MutilationObject
 //returns MutilationObject
 function mutilate(mutilatedString){
 	//do mutilation
     mutilatedString.mutilate_content();
+	mutilatedString.mutilate_language();
 	mutilatedString.mutilate_diacritial();
 	mutilatedString.mutilate_tag();
     console.log("mutilation - complete");
