@@ -14,274 +14,291 @@
  */
 
 var alphabet = "abcdefghijklmnopqrstuvexyz";
+var prevString = null;
+
+function MutilationObject(heldString, offsetPosX = 0, offsetPosY = 0, langKey = 0){
+	this.heldString = heldString;
+	this.offsetPosX = offsetPosX;
+	this.prevHeldString = prevString;
+	this.langKey = langKey;
+}
+
  
 //get input string
 //getString modified to both keep track of the previous iteration of the string, as well as grab the string and hold it within an object as a string property.
-function getString(previousString = null){	
-	var string = {heldstring: $("#input").val(), offsetpositionx: 0, offsetpositiony: 0, previousheldstring: previousString, languageKey: 0  } //get string from input
-	console.log("Input is: [" + string.heldstring + "]");
+//input is previous string or no input
+//output is a MutilationObject
+function getString(){
+	//var string = {heldstring: $("#input").val(), offsetpositionx: 0, offsetpositiony: 0, previousheldstring: previousString, languageKey: 0  } //get string from input
+	var string = new MutilationObject($("#input").val(), 0, 0, 0); //get string from input
+	console.log(string);
+	console.log("Input is: [" + string.heldString + "]");
 	console.log("get - complete");
 	return string;
 }
 
 //return Nonsense to page
-function returnNonsense(string){
+//input is a MutilationObject
+function returnNonsense(mutilatedString){
 	//return string to page
-	$("#output").html(string.heldstring);
-	console.log("Output is: [" + string.heldstring + "]");
+	$("#output").html(mutilatedString.heldString);
+	console.log("Output is: [" + mutilatedString.heldString + "]");
+	prevString = mutilatedString;
+	console.log("New PrevString is:");
+	console.log(mutilatedString);
 	console.log("return - complete");
 }
 
 //mutilate string
-//takes string
-//returns string
-function mutilate_content(string){
-	//do mutilation
-
-	var mutilatedString = {heldstring: "", offsetpositionx: 0, offsetpositiony: 0, previousheldstring: string, languageKey: 0 }
-	for (var x=0; x<string.length; x++){
-		if(string.heldstring.charAt(x)=='a'){
-			mutilatedString = mutilatedString + "TTTTTTTTTTTTTTTTTTTTTTTTTTTT";
+//takes MutilationObject
+//returns MutilationObject
+function mutilate_content(mutilatedString){
+	//var mutilatedString = {heldstring: "", offsetpositionx: 0, offsetpositiony: 0, previousheldstring: string, languageKey: 0 }
+	var pureHeldString = mutilatedString.heldString;
+	mutilatedString.heldString = ""; //SAVE OLD INTO PURE, WIPE OLD FOR WRITING
+	
+	for (var x=0; x < pureHeldString.length; x++){
+		if(pureHeldString.charAt(x)=='a'){
+			mutilatedString.heldString += "TTTTTTTTTTTTTTTTTTTTTTTTTTTT";
 		}
-		if(string.heldstring.charAt(x)=='b'){
-			mutilatedString = mutilatedString + "racedobonbonsetonkkkkkkkkkkkorda";
+		if(pureHeldString.charAt(x)=='b'){
+			mutilatedString.heldString +=  "racedobonbonsetonkkkkkkkkkkkorda";
 		}
-		if(string.heldstring.charAt(x)=='c'){
-			mutilatedString = mutilatedString + randomletter() + randomletter() + randomletter();
+		if(pureHeldString.charAt(x)=='c'){
+			mutilatedString.heldString +=  randomletter() + randomletter() + randomletter();
 		}
-		if(string.heldstring.charAt(x)=='d'){
-			mutilatedString = mutilatedString + "R" + randomletter() + "C" + randomletter() + "RD" + randomletter();
+		if(pureHeldString.charAt(x)=='d'){
+			mutilatedString.heldString +=  "R" + randomletter() + "C" + randomletter() + "RD" + randomletter();
 		}
-		if(string.heldstring.charAt(x)=='e'){
-			mutilatedString = mutilatedString + "M" + randomletter() + "L" + randomletter() + "S";
+		if(pureHeldString.charAt(x)=='e'){
+			mutilatedString.heldString +=  "M" + randomletter() + "L" + randomletter() + "S";
 		}
-		if(string.heldstring.charAt(x)=='f'){
-			mutilatedString = mutilatedString + "Daniel, the Vito"
+		if(pureHeldString.charAt(x)=='f'){
+			mutilatedString.heldString +=  "Daniel, the Vito"
 		}
-		if(string.heldstring.charAt(x)=='g'){
-			mutilatedString = mutilatedString + "\n"
+		if(pureHeldString.charAt(x)=='g'){
+			mutilatedString.heldString +=  "\n"
 		}
-		if(string.heldstring.charAt(x)=='h'){
-			mutilatedString = mutilatedString + "\n TTTTTTTTTTXTTTTTT"
+		if(pureHeldString.charAt(x)=='h'){
+			mutilatedString.heldString +=  "\n TTTTTTTTTTXTTTTTT"
 		}
-		if(string.heldstring.charAt(x)=='i'){
-			mutilatedString = mutilatedString + "SOMBERTONES " + randomletter() + randomletter() + randomletter();
+		if(pureHeldString.charAt(x)=='i'){
+			mutilatedString.heldString +=  "SOMBERTONES " + randomletter() + randomletter() + randomletter();
 		}
-		if(string.heldstring.charAt(x)=='j'){
+		if(pureHeldString.charAt(x)=='j'){
 			var limit = Math.random*50;
 			for ( var i=0; i<limit; i++) {
-
-			mutilatedString = mutilatedString + randomletter();
+				mutilatedString.heldString +=  randomletter();
 			}
 		}
-		if(string.heldstring.charAt(x)=='k'){
-			mutilatedString = mutilatedString + "\n"
+		if(pureHeldString.charAt(x)=='k'){
+			mutilatedString.heldString +=  "\n"
 		}
-		if(string.heldstring.charAt(x)=='l'){
-			mutilatedString = mutilatedString + "\n" + randomletter();
+		if(pureHeldString.charAt(x)=='l'){
+			mutilatedString.heldString +=  "\n" + randomletter();
 		}
-		if(string.heldstring.charAt(x)=='m'){
-			mutilatedString = mutilatedString + "MY NAME IS ";
+		if(pureHeldString.charAt(x)=='m'){
+			mutilatedString.heldString +=  "MY NAME IS ";
 			var namelength = Math.random()*10;
 			for (i=0;i<namelength;i++){
-				mutilatedString = mutilatedString + randomletter();
+				mutilatedString.heldString += randomletter();
 			}
 		}
-		if(string.heldstring.charAt(x)=='n'){
-			mutilatedString = mutilatedString + "HOWQUAINT";
+		if(pureHeldString.charAt(x)=='n'){
+			mutilatedString.heldString += "HOWQUAINT";
 		}
-		if(string.heldstring.charAt(x)=='o'){
-			mutilatedString = mutilatedString + "\n \n Nah \n";
+		if(pureHeldString.charAt(x)=='o'){
+			mutilatedString.heldString += "\n \n Nah \n";
 		}
-		if(string.heldstring.charAt(x)=='p'){
-			mutilatedString = mutilatedString + "DOINGTTTTTTTTTTDOINGTTTTTTDONGTTTTDOGTDOTTTTT";
+		if(pureHeldString.charAt(x)=='p'){
+			mutilatedString.heldString += "DOINGTTTTTTTTTTDOINGTTTTTTDONGTTTTDOGTDOTTTTT";
 		}
-		if(string.heldstring.charAt(x)=='q'){
-			mutilatedString = mutilatedString + "QUAS WEX EXORT";
+		if(pureHeldString.charAt(x)=='q'){
+			mutilatedString.heldString += "QUAS WEX EXORT";
 		}
-		if(string.heldstring.charAt(x)=='r'){
-			mutilatedString = mutilatedString + "LET US TEST";
+		if(pureHeldString.charAt(x)=='r'){
+			mutilatedString.heldString += "LET US TEST";
 		}
-		if(string.heldstring.charAt(x)=='s'){
-			mutilatedString = mutilatedString + " RUN RUN RUN";
+		if(pureHeldString.charAt(x)=='s'){
+			mutilatedString.heldString += " RUN RUN RUN";
 		}
-		if(string.heldstring.charAt(x)=='t'){
-			mutilatedString = mutilatedString + "IS THAT IT?";
+		if(pureHeldString.charAt(x)=='t'){
+			mutilatedString.heldString += "IS THAT IT?";
 		}
-		if(string.heldstring.charAt(x)=='u'){
-			mutilatedString = mutilatedString + "THE END IS NEAR";
+		if(pureHeldString.charAt(x)=='u'){
+			mutilatedString.heldString += "THE END IS NEAR";
 		}
-		if(string.heldstring.charAt(x)=='v'){
-			mutilatedString = mutilatedString + "TSKRAW";
+		if(pureHeldString.charAt(x)=='v'){
+			mutilatedString.heldString += "TSKRAW";
 		}
-		if(string.heldstring.charAt(x)=='w'){
-			mutilatedString = mutilatedString + "ESCRONG";
+		if(pureHeldString.charAt(x)=='w'){
+			mutilatedString.heldString += "ESCRONG";
 		}
-		if(string.heldstring.charAt(x)=='x'){
-			mutilatedString = mutilatedString + "ISCIR";
+		if(pureHeldString.charAt(x)=='x'){
+			mutilatedString.heldString += "ISCIR";
 		}
-		if(string.heldstring.charAt(x)=='y'){
-			mutilatedString = mutilatedString + "ENNYE";
+		if(pureHeldString.charAt(x)=='y'){
+			mutilatedString.heldString += "ENNYE";
 		}
-		if(string.heldstring.charAt(x)=='z'){
-			mutilatedString = mutilatedString + "I DON'T SEE NOTHING WRONG";
+		if(pureHeldString.charAt(x)=='z'){
+			mutilatedString.heldString += "I DON'T SEE NOTHING WRONG";
 		}
-		if(string.heldstring.charAt(x)=='A'){
-		mutilatedString = mutilatedString + "\n this \n isn't \n blowing \n over";
+		if(pureHeldString.charAt(x)=='A'){
+		mutilatedString.heldString += "\n this \n isn't \n blowing \n over";
 		}
-		if(string.heldstring.charAt(x)=='B'){
-			mutilatedString = mutilatedString + "REGROW";
+		if(pureHeldString.charAt(x)=='B'){
+			mutilatedString.heldString += "REGROW";
 		}
-		if(string.heldstring.charAt(x)=='C'){
-			mutilatedString = mutilatedString + "NEGATE";
+		if(pureHeldString.charAt(x)=='C'){
+			mutilatedString.heldString += "NEGATE";
 		}
-		if(string.heldstring.charAt(x)=='D'){
-			mutilatedString = mutilatedString + "NO STYLE NO GRACE";
+		if(pureHeldString.charAt(x)=='D'){
+			mutilatedString.heldString += "NO STYLE NO GRACE";
 		}
-		if(string.heldstring.charAt(x)=='E'){
-			mutilatedString = mutilatedString + "\n";
+		if(pureHeldString.charAt(x)=='E'){
+			mutilatedString.heldString += "\n";
 		}
-		if(string.heldstring.charAt(x)=='F'){
-			mutilatedString = mutilatedString + "PROJARED \n";
+		if(pureHeldString.charAt(x)=='F'){
+			mutilatedString.heldString += "PROJARED \n";
 		}
-		if(string.heldstring.charAt(x)=='G'){
-			mutilatedString = mutilatedString + "MYSTICAL \n";
+		if(pureHeldString.charAt(x)=='G'){
+			mutilatedString.heldString += "MYSTICAL \n";
 		}
-		if(string.heldstring.charAt(x)=='H'){
-			mutilatedString = mutilatedString + "MAGICAL \n";
+		if(pureHeldString.charAt(x)=='H'){
+			mutilatedString.heldString += "MAGICAL \n";
 		}
-		if(string.heldstring.charAt(x)=='I'){
-			mutilatedString = mutilatedString + "\n";
+		if(pureHeldString.charAt(x)=='I'){
+			mutilatedString.heldString += "\n";
 		}
-		if(string.heldstring.charAt(x)=='J'){
-			mutilatedString = mutilatedString + "LURE UNTO";
+		if(pureHeldString.charAt(x)=='J'){
+			mutilatedString.heldString += "LURE UNTO";
 		}
-		if(string.heldstring.charAt(x)=='K'){
-			mutilatedString = mutilatedString + "WHAT IS THIS \n \n \n";
+		if(pureHeldString.charAt(x)=='K'){
+			mutilatedString.heldString += "WHAT IS THIS \n \n \n";
 		}
-		if(string.heldstring.charAt(x)=='L'){
-			mutilatedString = mutilatedString + "\n \n";
+		if(pureHeldString.charAt(x)=='L'){
+			mutilatedString.heldString += "\n \n";
 		}
-		if(string.heldstring.charAt(x)=='M'){
-			mutilatedString = mutilatedString + "ORIGIN" + randomletter() + randomletter() + randomletter();
+		if(pureHeldString.charAt(x)=='M'){
+			mutilatedString.heldString += "ORIGIN" + randomletter() + randomletter() + randomletter();
 		}
-		if(string.heldstring.charAt(x)=='N'){
-			mutilatedString = mutilatedString + "RUNDOWN \n \n";
+		if(pureHeldString.charAt(x)=='N'){
+			mutilatedString.heldString += "RUNDOWN \n \n";
 		}
-		if(string.heldstring.charAt(x)=='O'){
-			mutilatedString = mutilatedString + "I'M NOT GONNA LIE THIS IS DEFINITELY ME WHEN";
+		if(pureHeldString.charAt(x)=='O'){
+			mutilatedString.heldString += "I'M NOT GONNA LIE THIS IS DEFINITELY ME WHEN";
 		}
-		if(string.heldstring.charAt(x)=='P'){
-			mutilatedString = mutilatedString + "90009099990009009999909099";
+		if(pureHeldString.charAt(x)=='P'){
+			mutilatedString.heldString += "90009099990009009999909099";
 		}
-		if(string.heldstring.charAt(x)=='Q'){
-			mutilatedString = mutilatedString + "Q? REALLY? Q?";
+		if(pureHeldString.charAt(x)=='Q'){
+			mutilatedString.heldString += "Q? REALLY? Q?";
 		}
-		if(string.heldstring.charAt(x)=='R'){
-			mutilatedString = mutilatedString + "OTTOMANSHRIMP";
+		if(pureHeldString.charAt(x)=='R'){
+			mutilatedString.heldString += "OTTOMANSHRIMP";
 		}
-		if(string.heldstring.charAt(x)=='S'){
-			mutilatedString = mutilatedString + randomletter() + randomletter() + randomletter() + randomletter() + "BERT";
+		if(pureHeldString.charAt(x)=='S'){
+			mutilatedString.heldString += randomletter() + randomletter() + randomletter() + randomletter() + "BERT";
 		}
-		if(string.heldstring.charAt(x)=='T'){
-			mutilatedString = mutilatedString + "MCDONGALDS";
+		if(pureHeldString.charAt(x)=='T'){
+			mutilatedString.heldString += "MCDONGALDS";
 		}
-		if(string.heldstring.charAt(x)=='U'){
-			mutilatedString = mutilatedString + "\n";
+		if(pureHeldString.charAt(x)=='U'){
+			mutilatedString.heldString += "\n";
 		}
-		if(string.heldstring.charAt(x)=='V'){
-			mutilatedString = mutilatedString + "OEUF";
+		if(pureHeldString.charAt(x)=='V'){
+			mutilatedString.heldString += "OEUF";
 		}
-		if(string.heldstring.charAt(x)=='W'){
-			mutilatedString = mutilatedString + "WONDER";
+		if(pureHeldString.charAt(x)=='W'){
+			mutilatedString.heldString += "WONDER";
 		}
-		if(string.heldstring.charAt(x)=='X'){
-			mutilatedString = mutilatedString + "SLAPPIN";
+		if(pureHeldString.charAt(x)=='X'){
+			mutilatedString.heldString += "SLAPPIN";
 		}
-		if(string.heldstring.charAt(x)=='Y'){
-			mutilatedString = mutilatedString + "CULT";
+		if(pureHeldString.charAt(x)=='Y'){
+			mutilatedString.heldString += "CULT";
 		}
-		if(string.heldstring.charAt(x)=='Z'){
-			mutilatedString = mutilatedString + "CHAD";
+		if(pureHeldString.charAt(x)=='Z'){
+			mutilatedString.heldString += "CHAD";
 		}
-		if(string.heldstring.charAt(x)=='1'){
-			mutilatedString = mutilatedString + "\n Prime";
-		}if(string.heldstring.charAt(x)=='2'){
-			mutilatedString = mutilatedString + "\n Unbreakable";
-		}if(string.heldstring.charAt(x)=='3'){
-			mutilatedString = mutilatedString + "\n ♂";
-		}if(string.heldstring.charAt(x)=='4'){
-			mutilatedString = mutilatedString + " Lunchables™ \n";
-		}if(string.heldstring.charAt(x)=='5'){
-			mutilatedString = mutilatedString + "\n Hot and Spicy";
-		}if(string.heldstring.charAt(x)=='6'){
-			mutilatedString = mutilatedString + "Unpredicted";
-		}if(string.heldstring.charAt(x)=='7'){
-			mutilatedString = mutilatedString + "The eeeeeeeeeeeeeeeeeeeeeeeeeeend?";
-		}if(string.heldstring.charAt(x)=='8'){
-			mutilatedString = mutilatedString + "The end. \n";
-		}if(string.heldstring.charAt(x)=='9'){
-			mutilatedString = mutilatedString + "But really this time.";
-		}if(string.heldstring.charAt(x)=='0'){
-			mutilatedString = mutilatedString + "SISEPHAM";
-		}if(string.heldstring.charAt(x)=='!'){
-			mutilatedString = mutilatedString + "Irony. \n";
-		}if(string.heldstring.charAt(x)=='@'){
-			mutilatedString = mutilatedString + "everyone";
-		}if(string.heldstring.charAt(x)=='#'){
-			mutilatedString = mutilatedString + "$" + randomletter() + randomletter() + randomletter();
-		}if(string.heldstring.charAt(x)=='$'){
-			mutilatedString = mutilatedString + "Affordance";
-		}if(string.heldstring.charAt(x)=='%'){
-			mutilatedString = mutilatedString + "\n";
-		}if(string.heldstring.charAt(x)=='^'){
-			mutilatedString = mutilatedString + "Upwa" + randomletter() + randomletter();
-		}if(string.heldstring.charAt(x)=='&'){
-			mutilatedString = mutilatedString + "Inseperable";
-		}if(string.heldstring.charAt(x)=='*'){
-			mutilatedString = mutilatedString + "Pound";
-		}if(string.heldstring.charAt(x)=='('){
-			mutilatedString = mutilatedString + "Left";
-		}if(string.heldstring.charAt(x)==')'){
-			mutilatedString = mutilatedString + "Right";
-		}if(string.heldstring.charAt(x)=='-'){
-			mutilatedString = mutilatedString + "Away" + randomletter() + "\n";
-		}if(string.heldstring.charAt(x)=='_'){
-			mutilatedString = mutilatedString + "SANS";
-		}if(string.heldstring.charAt(x)=='+'){
-			mutilatedString = mutilatedString + "UNITEDWESTAND";
-		}if(string.heldstring.charAt(x)=='='){
-			mutilatedString = mutilatedString + "SUM";
-		}if(string.heldstring.charAt(x)=='{'){
-			mutilatedString = mutilatedString + "LEFTBEHIND";
-		}if(string.heldstring.charAt(x)=='['){
-			mutilatedString = mutilatedString + "STAT";
-		}if(string.heldstring.charAt(x)=='}'){
-			mutilatedString = mutilatedString + "I will stand unfaltering against your corruption, trading blow for blow, and emerge victorious.";
-		}if(string.heldstring.charAt(x)==']'){
-			mutilatedString = mutilatedString + "BLOCK";
-		}if(string.heldstring.charAt(x)==';'){
-			mutilatedString = mutilatedString + "Whoa, is that a programmer?";
-		}if(string.heldstring.charAt(x)==':'){
-			mutilatedString = mutilatedString + "Call";
-		}if(string.heldstring.charAt(x)=='|'){
-			mutilatedString = mutilatedString + "Spoiler";
-		}if(string.heldstring.charAt(x)=='<'){
-			mutilatedString = mutilatedString + "Two Evils";
-		}if(string.heldstring.charAt(x)==','){
-			mutilatedString = mutilatedString + "Breathe In";
-		}if(string.heldstring.charAt(x)=='>'){
-			mutilatedString = mutilatedString + "Sum of Parts";
-		}if(string.heldstring.charAt(x)=='.'){
-			mutilatedString = mutilatedString + ".";
-		}if(string.heldstring.charAt(x)=='?'){
-			mutilatedString = mutilatedString + ", Don't you agree?";
-		}if(string.heldstring.charAt(x)=='/'){
-			mutilatedString = mutilatedString + "What's a path?";
-		}if(string.heldstring.charAt(x)=='~'){
-			mutilatedString = mutilatedString + "Wingdings";
-		}if(string.heldstring.charAt(x)=='`'){
-			mutilatedString = mutilatedString + "You've found a hidden message. But I only have two sentences to tell you it.";
+		if(pureHeldString.charAt(x)=='1'){
+			mutilatedString.heldString += "\n Prime";
+		}if(pureHeldString.charAt(x)=='2'){
+			mutilatedString.heldString += "\n Unbreakable";
+		}if(pureHeldString.charAt(x)=='3'){
+			mutilatedString.heldString += "\n ♂";
+		}if(pureHeldString.charAt(x)=='4'){
+			mutilatedString.heldString += " Lunchables™ \n";
+		}if(pureHeldString.charAt(x)=='5'){
+			mutilatedString.heldString += "\n Hot and Spicy";
+		}if(pureHeldString.charAt(x)=='6'){
+			mutilatedString.heldString += "Unpredicted";
+		}if(pureHeldString.charAt(x)=='7'){
+			mutilatedString.heldString += "The eeeeeeeeeeeeeeeeeeeeeeeeeeend?";
+		}if(pureHeldString.charAt(x)=='8'){
+			mutilatedString.heldString += "The end. \n";
+		}if(pureHeldString.charAt(x)=='9'){
+			mutilatedString.heldString += "But really this time.";
+		}if(pureHeldString.charAt(x)=='0'){
+			mutilatedString.heldString += "SISEPHAM";
+		}if(pureHeldString.charAt(x)=='!'){
+			mutilatedString.heldString += "Irony. \n";
+		}if(pureHeldString.charAt(x)=='@'){
+			mutilatedString.heldString += "everyone";
+		}if(pureHeldString.charAt(x)=='#'){
+			mutilatedString.heldString += "$" + randomletter() + randomletter() + randomletter();
+		}if(pureHeldString.charAt(x)=='$'){
+			mutilatedString.heldString += "Affordance";
+		}if(pureHeldString.charAt(x)=='%'){
+			mutilatedString.heldString += "\n";
+		}if(pureHeldString.charAt(x)=='^'){
+			mutilatedString.heldString += "Upwa" + randomletter() + randomletter();
+		}if(pureHeldString.charAt(x)=='&'){
+			mutilatedString.heldString += "Inseperable";
+		}if(pureHeldString.charAt(x)=='*'){
+			mutilatedString.heldString += "Pound";
+		}if(pureHeldString.charAt(x)=='('){
+			mutilatedString.heldString += "Left";
+		}if(pureHeldString.charAt(x)==')'){
+			mutilatedString.heldString += "Right";
+		}if(pureHeldString.charAt(x)=='-'){
+			mutilatedString.heldString += "Away" + randomletter() + "\n";
+		}if(pureHeldString.charAt(x)=='_'){
+			mutilatedString.heldString += "SANS";
+		}if(pureHeldString.charAt(x)=='+'){
+			mutilatedString.heldString += "UNITEDWESTAND";
+		}if(pureHeldString.charAt(x)=='='){
+			mutilatedString.heldString += "SUM";
+		}if(pureHeldString.charAt(x)=='{'){
+			mutilatedString.heldString += "LEFTBEHIND";
+		}if(pureHeldString.charAt(x)=='['){
+			mutilatedString.heldString += "STAT";
+		}if(pureHeldString.charAt(x)=='}'){
+			mutilatedString.heldString += "I will stand unfaltering against your corruption, trading blow for blow, and emerge victorious.";
+		}if(pureHeldString.charAt(x)==']'){
+			mutilatedString.heldString += "BLOCK";
+		}if(pureHeldString.charAt(x)==';'){
+			mutilatedString.heldString += "Whoa, is that a programmer?";
+		}if(pureHeldString.charAt(x)==':'){
+			mutilatedString.heldString += "Call";
+		}if(pureHeldString.charAt(x)=='|'){
+			mutilatedString.heldString += "Spoiler";
+		}if(pureHeldString.charAt(x)=='<'){
+			mutilatedString.heldString += "Two Evils";
+		}if(pureHeldString.charAt(x)==','){
+			mutilatedString.heldString += "Breathe In";
+		}if(pureHeldString.charAt(x)=='>'){
+			mutilatedString.heldString += "Sum of Parts";
+		}if(pureHeldString.charAt(x)=='.'){
+			mutilatedString.heldString += ".";
+		}if(pureHeldString.charAt(x)=='?'){
+			mutilatedString.heldString += ", Don't you agree?";
+		}if(pureHeldString.charAt(x)=='/'){
+			mutilatedString.heldString += "What's a path?";
+		}if(pureHeldString.charAt(x)=='~'){
+			mutilatedString.heldString += "Wingdings";
+		}if(pureHeldString.charAt(x)=='`'){
+			mutilatedString.heldString += "You've found a hidden message. But I only have two sentences to tell you it.";
 		}
 	}
 	return mutilatedString;
@@ -306,12 +323,13 @@ function decimalToHexString(number){
 }
 
 //mutilates string via adding random combining diacritcal marks to each character
-//takes string
-//returns string
-function mutilate_diacritial(string){
+//takes MutilationObject
+//returns MutilationObject
+function mutilate_diacritial(mutilatedString){
 	//diacriticals are from 0300 to 036F
+	var pureString = mutilatedString.heldString;
 	var output = "";
-	for(i = 0; i < string.length; i++){
+	for(i = 0; i < pureString.length; i++){
 		var num_prefix = Math.floor(Math.random() * 10);
 		var num_suffix = Math.floor(Math.random() * 10);
 		for(j = 0; j < num_prefix; j++){
@@ -320,7 +338,7 @@ function mutilate_diacritial(string){
 			var diacrit = String.fromCharCode(num);
 			output += diacrit;
 		}
-		var sub = string.substring(i, i+1);
+		var sub = pureString.substring(i, i+1);
 		output += sub;
 		for(j = 0; j < num_suffix; j++){
 			//num is some random integer from 0 + 768 (0x0300) to 111 + 768 (0x36F) in Decimal
@@ -329,23 +347,26 @@ function mutilate_diacritial(string){
 			output += diacrit;
 		}	
 	}
-	return output;
+	mutilatedString.heldString = output;
+	return mutilatedString;
 }
 
 //must be last or otherwise have span tags UN-modified
 //mutilates string by adding style tags around each character with randomized color and font-size values
-//takes string
-//returns string
-function mutilate_tag(string){
+//takes MutilationObject
+//returns MutilationObject
+function mutilate_tag(mutilatedString){
 	var output = "";
-	for(i = 0; i < string.length; i++){
+	var pureString = mutilatedString.heldString;
+	
+	for(i = 0; i < pureString.length; i++){
 		//MUTILATE COLOR
 		//num is some random integer from 0 to 16777215 (0xFFFFFF), 
 		var num = Math.floor(Math.random() * 16777215) + 1;
 		var hex = decimalToHexString(num);
 		//size is some random number from 1 to 2
 		var size = Math.random() * 2 + 1;
-		var sub = string.substring(i, i+1);
+		var sub = pureString.substring(i, i+1);
 		//output += "<span style=\"color: #" + hex + ";" +
 		//		"font-size:" + size + "em\">" + sub + "</span>";
 		var span = $('<span>'+sub+'</span>').clone()
@@ -355,20 +376,20 @@ function mutilate_tag(string){
 						}).prop('outerHTML');
 		output += span;
 	}
-	return output;
+	mutilatedString.heldString = output;
+	return mutilatedString;
 }
 
 //mutilate string driver
-//takes string
-//returns string
-function mutilate(string){
+//takes MutilationObject
+//returns MutilationObject
+function mutilate(mutilatedString){
 	//do mutilation
-	var output = string.repeat(1);
-    output = mutilate_content(output);
-	output = mutilate_diacritial(output);
-	output = mutilate_tag(output);
+    mutilatedString = mutilate_content(mutilatedString);
+	mutilatedString = mutilate_diacritial(mutilatedString);
+	mutilatedString = mutilate_tag(mutilatedString);
     console.log("mutilation - complete");
-	return output;
+	return mutilatedString;
 }
 
 // "main"
