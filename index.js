@@ -26,6 +26,9 @@ function MutilationObject(heldString, offsetPosX = 0, offsetPosY = 0, langKey = 
 	this.offsetPosX = offsetPosX;
 	this.prevHeldString = prevString;
 	this.langKey = langKey;
+	this.mutilate_content = mutilate_content;
+	this.mutilate_diacritial = mutilate_diacritial;
+	this.mutilate_tag = mutilate_tag;
 }
  
 //get input string
@@ -53,10 +56,10 @@ function returnNonsense(mutilatedString){
 	console.log("return - complete");
 }
 
-//mutilate string
-//takes MutilationObject
-//returns MutilationObject
-function mutilate_content(mutilatedString){
+//METHOD for MutilationObject
+//modifies the content.
+function mutilate_content(){
+	mutilatedString = this;
 	//var mutilatedString = {heldstring: "", offsetpositionx: 0, offsetpositiony: 0, previousheldstring: string, languageKey: 0 }
 	var pureHeldString = mutilatedString.heldString;
 	mutilatedString.heldString = ""; //SAVE OLD INTO PURE, WIPE OLD FOR WRITING
@@ -305,7 +308,7 @@ function mutilate_content(mutilatedString){
 			mutilatedString.heldString += "You've found a hidden message. But I only have two sentences to tell you it.";
 		}
 	}
-	return mutilatedString;
+	console.log("mutilate_content DONE");
 }
 
 //returns a random letter
@@ -326,10 +329,11 @@ function decimalToHexString(number){
   return number.toString(16).toUpperCase();
 }
 
+
+//METHOD for MutilationObject
 //mutilates string via adding random combining diacritcal marks to each character
-//takes MutilationObject
-//returns MutilationObject
-function mutilate_diacritial(mutilatedString){
+function mutilate_diacritial(){
+	mutilatedString = this;
 	//diacriticals are from 0300 to 036F
 	var pureString = mutilatedString.heldString;
 	var output = "";
@@ -352,14 +356,13 @@ function mutilate_diacritial(mutilatedString){
 		}	
 	}
 	mutilatedString.heldString = output;
-	return mutilatedString;
 }
 
-//must be last or otherwise have span tags UN-modified
+//METHOD for MutilationObject
+//REQUIREMENT: must be run last or otherwise have span tags UN-modified
 //mutilates string by adding style tags around each character with randomized color and font-size values
-//takes MutilationObject
-//returns MutilationObject
-function mutilate_tag(mutilatedString){
+function mutilate_tag(){
+	mutilatedString = this;
 	var output = "";
 	var pureString = mutilatedString.heldString;
 	
@@ -381,7 +384,6 @@ function mutilate_tag(mutilatedString){
 		output += span;
 	}
 	mutilatedString.heldString = output;
-	return mutilatedString;
 }
 
 //Source of trick: https://ctrlq.org/code/19909-google-translate-api
@@ -435,9 +437,9 @@ function nonsenseGen_callback(string){
 //returns MutilationObject
 function mutilate(mutilatedString){
 	//do mutilation
-    mutilatedString = mutilate_content(mutilatedString);
-	mutilatedString = mutilate_diacritial(mutilatedString);
-	mutilatedString = mutilate_tag(mutilatedString);
+    mutilatedString.mutilate_content();
+	mutilatedString.mutilate_diacritial();
+	mutilatedString.mutilate_tag();
     console.log("mutilation - complete");
 	return mutilatedString;
 }
