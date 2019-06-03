@@ -559,15 +559,19 @@ function toggleMutilationSettings(selected_setting){
 	
 }
 
+function labelEvent(){
+	var labelID = $(this).attr('for');
+	$('#'+labelID).trigger('click');
+}
+
+function boxEvent(){
+	toggleMutilationSettings(settingEnum.MUT_CONTENT);
+	updateCheckboxes(settingEnum.MUT_CONTENT, this);
+}
+
 $(document).ready(function(){
 	$("#activate").click(nonsenseGen);
-	$("#toggle_content_label").click(function(){
-		var labelID = $(this).attr('for');
-		$('#'+labelID).trigger('click');
-	});
-	$("#toggle_content_box").click(function(){
-		toggleMutilationSettings(settingEnum.MUT_CONTENT);
-		updateCheckboxes(settingEnum.MUT_CONTENT, "#toggle_content_box");
-	});
+	$("#toggle_content_label").click(labelEvent);
+	$("#toggle_content_box").click(boxEvent);
 	updateCheckboxes(settingEnum.MUT_CONTENT, "#toggle_content_box");
 });
