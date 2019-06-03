@@ -13,13 +13,29 @@
  *  3) Return string to output
  */
 
-var alphabet = "abcdefghijklmnopqrstuvexyz";
-var language_dict = [
+const alphabet = "abcdefghijklmnopqrstuvexyz";
+const language_dict = [
 		['af', 'Afrikaans'], 
 		['sq', 'Albanian' ],
 		['am', 'Amharic']
 	];
+const settingEnum = {
+	MUT_CONTENT:	0,
+	MUT_DIACRIT:	1,
+	MUT_TAG:		2,
+	MUT_LANG:		3,
+	MUT_EXAMPLE:	-1,
+};
+var settingVars = {
+	0: {"state":true,	"name":"MUT_CONTENT"}, //MUT_CONTENT
+	1: {"state":true,	"name":"MUT_DIACRIT"}, //MUT_DIACRIT
+	2: {"state":true,	"name":"MUT_TAG"}, //MUT_TAG
+	3: {"state":true,	"name":"MUT_LANG"}, //MUT_LANG
+	4: {"state":false,	"name":"MUT_EXAMPLE"}, //MUT_EXAMPLE
+};
+
 var prevString = null;
+
 
 function MutilationObject(heldString, offsetPosX = 0, offsetPosY = 0, langKey = 0){
 	this.heldString = heldString;
@@ -488,12 +504,21 @@ function mutilate_language(){
 		});
 }
 
-  
+
+
 //takes MutilationObject
 //returns MutilationObject
 function mutilate(mutilatedString){
 	//do mutilation
-    mutilatedString.mutilate_content();
+	
+	//NOTE FOR WILL
+		//KEEP THIS ORDER FOR MUTILATIONS
+		//OR DON'T, BUT!
+			//LANGUAGE MUST GO BEFORE DIACRITS OR ELSE IT'S WORTHLESS
+			//TAG MUST GO AT THE END OR ELSE YOU GET GARBAGE
+	if (settingVars[settingEnum.MUT_CONTENT].state){ //CONTENT
+		mutilatedString.mutilate_content();
+	}
 	mutilatedString.mutilate_language();
 	mutilatedString.mutilate_diacritial();
 	mutilatedString.mutilate_tag();
@@ -506,13 +531,43 @@ function mutilate(mutilatedString){
 function nonsenseGen(){
 	var string = getString();
 	//string = mutilate_A(string);
- 
+
 	string = mutilate(string);
 	returnNonsense(string);
 	console.log("DONE");
 	console.log(""); //console spacing
 }
- 
+
+function updateCheckboxes(selected_setting, input_id){
+	var setting = settingVars[selected_setting];
+	if(setting.state == true){
+		$(input_id).prop("checked", true);
+		console.log("check");
+	}
+	else{
+		$(input_id).prop("checked", false);
+		console.log("uncheck");
+	}
+}
+
+function toggleMutilationSettings(selected_setting){
+	var setting = settingVars[selected_setting];
+	var state = setting.state;
+	setting.state = !state;
+
+	console.log("toggled", selected_setting, setting.state);
+	
+}
+
 $(document).ready(function(){
 	$("#activate").click(nonsenseGen);
+	$("#toggle_content_label").click(function(){
+		var labelID = $(this).attr('for');
+		$('#'+labelID).trigger('click');
+	});
+	$("#toggle_content_box").click(function(){
+		toggleMutilationSettings(settingEnum.MUT_CONTENT);
+		updateCheckboxes(settingEnum.MUT_CONTENT, "#toggle_content_box");
+	});
+	updateCheckboxes(settingEnum.MUT_CONTENT, "#toggle_content_box");
 });
