@@ -539,11 +539,15 @@ function mutilate(mutilatedString){
 // "main"
 // runs on click
 function nonsenseGen(){
+	$("#output").html("");
+	$("#loading").show();
+	$("#greeting").hide();
 	var string = getString();
 	//string = mutilate_A(string);
  
 	string = mutilate(string);
 	returnNonsense(string);
+	$("#loading").hide();
 	console.log("DONE");
 	console.log(""); //console spacing
 }
@@ -577,11 +581,11 @@ function toggleMutilationSettings(selected_setting){
 	console.log("toggled", settingVars[selected_setting].name, setting.state);
 }
 
-function labelEvent(){
+/*function labelEvent(){
 	console.log("label click event!");
 	//var labelID = $(this).attr('for');
 	//$('#'+labelID).trigger('click');
-}
+}*/
 
 function boxEvent(){
 	console.log("box click event!", $(this).attr('id'));
@@ -607,9 +611,10 @@ $(document).ready(function(){
 			var input_id = temp[j];
 			console.log(input_id);
 			console.log("j: ", j);
-			if (j == 0) $(input_id).click(labelEvent);
-			else $(input_id).click(boxEvent);
+			//if (j == 0) $(input_id).click(labelEvent);
+			/*else*/ $(input_id).click(boxEvent);
 		}
 	}
 	updateCheckboxes();
+	$("#loading").hide();
 });

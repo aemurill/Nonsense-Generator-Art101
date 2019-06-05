@@ -84,5 +84,10 @@ script{
 }
 
 #output{
+		text-align:left;
 		white-space: pre-wrap;
+}
+
+#output_parent{
+		text-align:center;
 }
