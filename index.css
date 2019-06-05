@@ -82,3 +82,7 @@ script{
 .delete:hover {
 		background-color: #00DDDD;
 }
+
+#output{
+		white-space: pre-wrap;
+}
