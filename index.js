@@ -19,6 +19,26 @@ var language_dict = [
 		['sq', 'Albanian' ],
 		['am', 'Amharic']
 	];
+const settingEnum = {
+	MUT_CONTENT:	0,
+	MUT_DIACRIT:	1,
+	MUT_TAG:		2,
+	MUT_LANG:		3,
+	MUT_EXAMPLE:	-1,
+};
+var settingVars = {
+	0: {"state":true,	"name":"MUT_CONTENT"}, //MUT_CONTENT
+	1: {"state":true,	"name":"MUT_DIACRIT"}, //MUT_DIACRIT
+	2: {"state":true,	"name":"MUT_TAG"}, //MUT_TAG
+	3: {"state":true,	"name":"MUT_LANG"}, //MUT_LANG
+	4: {"state":false,	"name":"MUT_EXAMPLE"}, //MUT_EXAMPLE
+};
+var settingIDs= {
+	0: ["#toggle_content_label", "#toggle_content_box"], //MUT_CONTENT
+	1: ["#toggle_diacrit_label", "#toggle_diacrit_box"], //MUT_DIACRIT
+	2: ["#toggle_tag_label", "#toggle_tag_box"], //MUT_TAG
+	3: ["#toggle_lang_label", "#toggle_lang_box"]  //MUT_LANG
+};
 var prevString = null;
 
 function MutilationObject(heldString, offsetPosX = 0, offsetPosY = 0, langKey = 0){
@@ -26,6 +46,15 @@ function MutilationObject(heldString, offsetPosX = 0, offsetPosY = 0, langKey = 
 	this.offsetPosX = offsetPosX;
 	this.prevHeldString = prevString;
 	this.langKey = langKey;
+	this.mutilate_content = mutilate_content;
+	this.mutilate_diacritial = mutilate_diacritial;
+	this.mutilate_tag = mutilate_tag;
+	this.mutilate_language = mutilate_language;
+	this.limiter = function(){
+		//clip string max length!
+		if(this.heldString.length > 15000)
+			this.heldString = this.heldString.substring(0,14999);
+	}
 }
  
 //get input string
@@ -48,15 +77,14 @@ function returnNonsense(mutilatedString){
 	$("#output").html(mutilatedString.heldString);
 	console.log("Output is: [" + mutilatedString.heldString + "]");
 	prevString = mutilatedString;
-	console.log("New PrevString is:");
-	console.log(mutilatedString);
+	console.log("New PrevString is:", mutilatedString.heldString);
 	console.log("return - complete");
 }
 
-//mutilate string
-//takes MutilationObject
-//returns MutilationObject
-function mutilate_content(mutilatedString){
+//METHOD for MutilationObject
+//modifies the content.
+function mutilate_content(){
+	var mutilatedString = this;
 	//var mutilatedString = {heldstring: "", offsetpositionx: 0, offsetpositiony: 0, previousheldstring: string, languageKey: 0 }
 	var pureHeldString = mutilatedString.heldString;
 	mutilatedString.heldString = ""; //SAVE OLD INTO PURE, WIPE OLD FOR WRITING
@@ -304,8 +332,10 @@ function mutilate_content(mutilatedString){
 		}if(pureHeldString.charAt(x)=='`'){
 			mutilatedString.heldString += "You've found a hidden message. But I only have two sentences to tell you it.";
 		}
+		mutilatedString.limiter();
 	}
-	return mutilatedString;
+	mutilatedString.limiter();
+	console.log("mutilate_content DONE", mutilatedString.heldString);
 }
 
 //returns a random letter
@@ -326,10 +356,11 @@ function decimalToHexString(number){
   return number.toString(16).toUpperCase();
 }
 
+
+//METHOD for MutilationObject
 //mutilates string via adding random combining diacritcal marks to each character
-//takes MutilationObject
-//returns MutilationObject
-function mutilate_diacritial(mutilatedString){
+function mutilate_diacritial(){
+	var mutilatedString = this;
 	//diacriticals are from 0300 to 036F
 	var pureString = mutilatedString.heldString;
 	var output = "";
@@ -349,17 +380,19 @@ function mutilate_diacritial(mutilatedString){
 			var num = Math.floor(Math.random() * 112) + 768; 
 			var diacrit = String.fromCharCode(num);
 			output += diacrit;
+			mutilatedString.limiter();
 		}	
 	}
 	mutilatedString.heldString = output;
-	return mutilatedString;
+	mutilatedString.limiter();
+	console.log("Post Diacrit: ", mutilatedString.heldString);
 }
 
-//must be last or otherwise have span tags UN-modified
+//METHOD for MutilationObject
+//REQUIREMENT: must be run last or otherwise have span tags UN-modified
 //mutilates string by adding style tags around each character with randomized color and font-size values
-//takes MutilationObject
-//returns MutilationObject
-function mutilate_tag(mutilatedString){
+function mutilate_tag(){
+	var mutilatedString = this;
 	var output = "";
 	var pureString = mutilatedString.heldString;
 	
@@ -381,10 +414,32 @@ function mutilate_tag(mutilatedString){
 		output += span;
 	}
 	mutilatedString.heldString = output;
-	return mutilatedString;
 }
 
-//Source of trick: https://ctrlq.org/code/19909-google-translate-api
+//mutilate string driver
+/*//takes string
+//returns string
+function mutilate_A(string){
+	//do mutilation
+	var output = string.repeat(1);
+	output = mutilate_content(output);
+	output = PrepQuery(output);
+}
+function mutilate_B(string){
+	console.log(string);
+	var output = mutilate_diacritial(string);
+	output = mutilate_tag(output);
+	console.log("mutilation - complete");
+	nonsenseGen_callback(output);
+}
+function nonsenseGen_callback(string){
+	returnNonsense(string);
+	console.log("DONE");
+	console.log(""); //console spacing
+*/
+
+
+/*
 function PrepQuery(sourceText){
 	console.log(sourceText);
 	var sourceLang = 'en';
@@ -405,39 +460,78 @@ function PrepQuery(sourceText){
 			console.log("ajax complete.");
 		});
 	return sourceText;
+}*/
+
+//retrieves result
+function awaitTranslation(promise){
+	var result_string = null;
+	promise.then(
+		function(result){
+			result_string = result;
+		}
+	);
+	console.log("promise results:", result_string);
+	return result_string;
 }
 
-//mutilate string driver
-/*//takes string
-//returns string
-function mutilate_A(string){
-	//do mutilation
-	var output = string.repeat(1);
-	output = mutilate_content(output);
-	output = PrepQuery(output);
+
+function mutilate_language(){
+	console.log("start lang mutilate");
+	var mutilatedString = this;
+	var sourceText = mutilatedString.heldString.substring(0,999);
+	//do json query of google translate
+	console.log(sourceText);
+	var sourceLang = 'en';
+	var targetLang = language_dict[2][0];
+	//Source of URL: https://ctrlq.org/code/19909-google-translate-api
+	var query = {
+			url: "https://translate.googleapis.com/translate_a/single?client=gtx&sl=" 
+				+ sourceLang + "&tl=" + targetLang + "&dt=t&q=" + encodeURI(sourceText),
+			dataType: 'json',
+			async: false //Breaking the rules heavily. This is discouraged.
+		};
+	var promise = 	$.ajax(query)
+		.done(function( json ){
+			console.log("ajax success!", json);
+			mutilatedString.heldString = "";
+			for (var i = 0; i < json[0].length; i++){
+				console.log(json[0][i][0]);
+				mutilatedString.heldString += json[0][i][0]; //continue mutilation 
+			}
+			mutilatedString.limiter();	
+		})
+		.fail(function( xhr, status, errorThrown){
+			console.log("ajax error! " + errorThrown + " Status:" + status);
+		})
+		.always(function(){
+			console.log("ajax complete.");
+		});
+
 }
 
-function mutilate_B(string){
-	console.log(string);
-	var output = mutilate_diacritial(string);
-	output = mutilate_tag(output);
-	console.log("mutilation - complete");
-	nonsenseGen_callback(output);
-}
 
-function nonsenseGen_callback(string){
-	returnNonsense(string);
-	console.log("DONE");
-	console.log(""); //console spacing
-*/
   
 //takes MutilationObject
 //returns MutilationObject
 function mutilate(mutilatedString){
 	//do mutilation
-    mutilatedString = mutilate_content(mutilatedString);
-	mutilatedString = mutilate_diacritial(mutilatedString);
-	mutilatedString = mutilate_tag(mutilatedString);
+	//NOTE FOR WILL
+		//KEEP THIS ORDER FOR MUTILATIONS
+		//OR DON'T, BUT!
+			//LANGUAGE MUST GO BEFORE DIACRITS OR ELSE IT'S WORTHLESS
+			//TAG MUST GO AT THE END OR ELSE YOU GET GARBAGE
+	if (settingVars[settingEnum.MUT_CONTENT].state){ //CONTENT
+		mutilatedString.mutilate_content();
+	}
+	if (settingVars[settingEnum.MUT_LANG].state){ //CONTENT
+		mutilatedString.mutilate_language();
+	}
+	if (settingVars[settingEnum.MUT_DIACRIT].state){ //CONTENT
+		mutilatedString.mutilate_diacritial();
+	}
+	if (settingVars[settingEnum.MUT_TAG].state){ //CONTENT
+		mutilatedString.mutilate_tag();
+	}
     console.log("mutilation - complete");
 	return mutilatedString;
 }
@@ -453,7 +547,69 @@ function nonsenseGen(){
 	console.log("DONE");
 	console.log(""); //console spacing
 }
- 
+
+function updateCheckboxes(){
+	var settingIDs_length = Object.keys(settingIDs).length;
+	for (var i = 0; i < settingIDs_length; i++){
+		var setting = settingVars[i];
+		var temp = settingIDs[i];
+		for (var j = 0; j < 2; j++){
+			var input_id = temp[j];
+			console.log(input_id);
+			if(setting.state == true){
+				$(input_id).prop("checked", true);
+				console.log("checked");
+			}
+			else{
+				$(input_id).prop("checked", false);
+				console.log("unchecked");
+			}
+		}
+	}
+}
+
+function toggleMutilationSettings(selected_setting){
+	var setting = settingVars[selected_setting];
+	var state = setting.state;
+	setting.state = !state;
+
+	console.log(selected_setting);
+	console.log("toggled", settingVars[selected_setting].name, setting.state);
+}
+
+function labelEvent(){
+	console.log("label click event!");
+	//var labelID = $(this).attr('for');
+	//$('#'+labelID).trigger('click');
+}
+
+function boxEvent(){
+	console.log("box click event!", $(this).attr('id'));
+	var box_id = "#" + $(this).attr('id');
+	var thisSettingEnum = 0;
+	var settingIDs_length = Object.keys(settingIDs).length;
+	for (var i = 0; i < settingIDs_length; i++){
+		if (box_id == settingIDs[i][1]){
+			console.log(box_id, settingIDs[i][1],i);
+			toggleMutilationSettings(i);
+		}
+	}
+	updateCheckboxes();
+}
+
 $(document).ready(function(){
+	var settingIDs_length = Object.keys(settingIDs).length;
 	$("#activate").click(nonsenseGen);
+	for (var i = 0; i < settingIDs_length; i++){
+		var temp = settingIDs[i];
+		console.log(temp);
+		for (var j = 0; j <= 1; j++){
+			var input_id = temp[j];
+			console.log(input_id);
+			console.log("j: ", j);
+			if (j == 0) $(input_id).click(labelEvent);
+			else $(input_id).click(boxEvent);
+		}
+	}
+	updateCheckboxes();
 });
