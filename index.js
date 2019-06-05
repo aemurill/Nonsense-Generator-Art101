@@ -17,7 +17,26 @@ var alphabet = "abcdefghijklmnopqrstuvexyz";
 var language_dict = [
 		['af', 'Afrikaans'], 
 		['sq', 'Albanian' ],
-		['am', 'Amharic']
+		['am', 'Amharic'],
+		['ar', 'Arabic'],
+		['hy', 'Armenian'],
+		['az', 'Azerbaijani'],
+		['eu', 'Basque'],
+		['be', 'Belarusian'],
+		['bn', 'Bengali'],
+		['bs', 'Bosnian'],
+		['bg', 'Bulgarian'],
+		['ca', 'Catalan'],
+		['zh-CN', 'Chinese (Simplified)'],
+		['zh-TW', 'Chinese (Traditional)'],
+		['es', 'Spanish'],
+		['pt', 'Portuguese'],
+		['id', 'Indonesian'],
+		['ja', 'Japanese'],
+		['ru', 'Russian'],
+		['fr', 'French'],
+		['de', 'German'],
+		// Chinese, Spanish, Arabic, Portuguese, Indonesian, Japanese, Russian, French and German. 
 	];
 const settingEnum = {
 	MUT_CONTENT:	0,
@@ -482,7 +501,7 @@ function mutilate_language(){
 	//do json query of google translate
 	console.log(sourceText);
 	var sourceLang = 'en';
-	var targetLang = language_dict[2][0];
+	var targetLang = $("#lang_select").val();
 	//Source of URL: https://ctrlq.org/code/19909-google-translate-api
 	var query = {
 			url: "https://translate.googleapis.com/translate_a/single?client=gtx&sl=" 
@@ -616,5 +635,12 @@ $(document).ready(function(){
 		}
 	}
 	updateCheckboxes();
+	var lang_select_DOM = $("#lang_select");
+	$.each(language_dict, function(index, subarray) {   
+		lang_select_DOM
+			.append($("<option></option>")
+				.attr("value",subarray[0])
+				.text(subarray[1])); 
+	});
 	$("#loading").hide();
 });
