@@ -69,6 +69,10 @@
 				<li><b>Styling (Axel)</b> - I used my previously created HTML & CSS template for this project. Some small updates were necessary to make things look good and stay intact.</li>
 				<li><b>Diacritical Marks and Formatting (Axel)</b> - I borrowed inspiration for the diacritical marks from Tchouk's Zalgo Text Generator. I had this mix with coloration and font-size, each completely randomizing per call. Thus, the output is "mutilated" such that it will have combining marks glued to each character, as well as each character varying in size and color.</li>
 				<li><b>Content Corruption (Will)</b> - Each character from the input is replaced with some string based on character. Certain replacements have random characters mixed in.</li>
+				<li><b>Language Translation (Axel)</b> - the string is sent to Google's translation service and returned. This uses an improper AJAX method, but works very well.</li>
+				<li><b>Toggle-able Interface (Axel)</b> - All the mutilations can be turned on and off!. Languages can also be selected!</li>
+				<li><b> (Axel)</b> - .</li>
+				<li><b> (Axel)</b> - .</li>
 			</ul>
 		</div>
 		
@@ -81,6 +85,12 @@
 			<p>I spent quite a long time trying to search for ways on how to randomize hex values such that I could use them for the Unicode Diacritical Marks and the font colors.</p>
 			<h3>Troubleshooting (Axel)</h3>
 			<p>Javascript is excellent at not being clear about errors half the time. Sometimes the error is clearly explained. Sometimes I need to check Stack Overflow.</p>
+			<h3>React-ability (Axel)</h3>
+			<p>Making the JS respond to inputs, and having the page react to JS changes was key to making everything work. I took much longer than expected in trying to streamline the process, as well as having the page work properly after accidentally breaking the checkbox updating system. I ended up needing to create Enums, and various data objects that contained values needed for not needing to repeat myself.</p>
+			<h3>AJAX and callbacks (Axel)</h3>
+			<p>I hate callbacks. At least, I hate how I was seemingly unable to get the system to wait for the AJAX event to finish before returning a value, rather than just having it call another function. I did this because I did not want to have to break up my flow into chunks just for method called by a function which was just a fraction of the process. As result, I decided to use a SYNCHRONOUS AJAX call, which is high heresy but was required for the functionality I was going for. That and my attempts to make the system wait for an async value kept NOT waiting for the value.</p>
+			<h3>Objectifying the String (Axel & Will)</h3>
+			<p>Turning the mutilated string into an object was tricky in that it required understanding how we were going to use our object. It was ultimately decided that having a MutilationObject contain the current data as well as have methods would be better than simply passing an object to a bunch of unrelated functions.</p>
 		</div>
 
 		<!-- TECH & ACHIEVES -->

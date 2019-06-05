@@ -64,7 +64,7 @@ function MutilationObject(heldString, offsetPosX = 0, offsetPosY = 0, langKey = 
 	this.heldString = heldString;
 	this.offsetPosX = offsetPosX;
 	this.prevHeldString = prevString;
-	this.langKey = langKey;
+	this.langKey = $("#lang_select").val();
 	this.mutilate_content = mutilate_content;
 	this.mutilate_diacritial = mutilate_diacritial;
 	this.mutilate_tag = mutilate_tag;
@@ -501,7 +501,7 @@ function mutilate_language(){
 	//do json query of google translate
 	console.log(sourceText);
 	var sourceLang = 'en';
-	var targetLang = $("#lang_select").val();
+	var targetLang = mutilatedString.langKey;
 	//Source of URL: https://ctrlq.org/code/19909-google-translate-api
 	var query = {
 			url: "https://translate.googleapis.com/translate_a/single?client=gtx&sl=" 
