@@ -13,6 +13,8 @@
  *  3) Return string to output
  */
 
+//DATA PORTION --------------------------------------------
+ 
 var alphabet = "abcdefghijklmnopqrstuvexyz";
 var language_dict = [
 		['af', 'Afrikaans'], 
@@ -60,6 +62,8 @@ var settingIDs= {
 };
 var prevString = null;
 
+//OBJECTS PORTION --------------------------------------------
+
 function MutilationObject(heldString, offsetPosX = 0, offsetPosY = 0, langKey = 0){
 	this.heldString = heldString;
 	this.offsetPosX = offsetPosX;
@@ -75,6 +79,8 @@ function MutilationObject(heldString, offsetPosX = 0, offsetPosY = 0, langKey = 
 			this.heldString = this.heldString.substring(0,14999);
 	}
 }
+
+//FUNCTIONS PORTION --------------------------------------------
  
 //get input string
 //getString modified to both keep track of the previous iteration of the string, as well as grab the string and hold it within an object as a string property.
@@ -482,7 +488,7 @@ function PrepQuery(sourceText){
 }*/
 
 //retrieves result
-function awaitTranslation(promise){
+function awaitTranslation(promise){ //UNUSED FUNCTION - WOULD HAVE CARRIED OUT ASYNC
 	var result_string = null;
 	promise.then(
 		function(result){
@@ -510,7 +516,7 @@ function mutilate_language(){
 			async: false //Breaking the rules heavily. This is discouraged.
 		};
 	var promise = 	$.ajax(query)
-		.done(function( json ){
+		.done(function( json ){ //do if successful
 			console.log("ajax success!", json);
 			mutilatedString.heldString = "";
 			for (var i = 0; i < json[0].length; i++){
@@ -519,10 +525,11 @@ function mutilate_language(){
 			}
 			mutilatedString.limiter();	
 		})
-		.fail(function( xhr, status, errorThrown){
+		.fail(function( xhr, status, errorThrown){ //on fail
 			console.log("ajax error! " + errorThrown + " Status:" + status);
+			if (sourceText.length < 1000) alert("Google Server Refused to Comply");
 		})
-		.always(function(){
+		.always(function(){ //notify of ajax completion
 			console.log("ajax complete.");
 		});
 
@@ -558,89 +565,86 @@ function mutilate(mutilatedString){
 // "main"
 // runs on click
 function nonsenseGen(){
-	$("#output").html("");
-	$("#loading").show();
-	$("#greeting").hide();
-	var string = getString();
+	$("#output").html(""); //clear output
+	$("#loading").show(); //show loading gif
+	$("#greeting").hide(); //hide init greetings
+	var string = getString(); //get data
 	//string = mutilate_A(string);
  
-	string = mutilate(string);
-	returnNonsense(string);
-	$("#loading").hide();
+	string = mutilate(string); //CALL MAIN MUTILATION FUNCTION
+	returnNonsense(string); //send back to screen
+	$("#loading").hide(); //stop showing loading gif WHEN DONE
 	console.log("DONE");
 	console.log(""); //console spacing
 }
 
 function updateCheckboxes(){
 	var settingIDs_length = Object.keys(settingIDs).length;
-	for (var i = 0; i < settingIDs_length; i++){
+	for (var i = 0; i < settingIDs_length; i++){ //for each setting
 		var setting = settingVars[i];
 		var temp = settingIDs[i];
-		for (var j = 0; j < 2; j++){
-			var input_id = temp[j];
-			console.log(input_id);
-			if(setting.state == true){
-				$(input_id).prop("checked", true);
-				console.log("checked");
-			}
-			else{
-				$(input_id).prop("checked", false);
-				console.log("unchecked");
-			}
+		var input_id = temp[1];						//get input id
+		console.log(input_id);
+		if(setting.state == true){						//set DOM checked
+			$(input_id).prop("checked", true);
+			console.log("checked");
+		}
+		else{											//set DOM unchecked
+			$(input_id).prop("checked", false);
+			console.log("unchecked");
 		}
 	}
 }
 
-function toggleMutilationSettings(selected_setting){
-	var setting = settingVars[selected_setting];
-	var state = setting.state;
-	setting.state = !state;
+//takes in integer representing setting
+function toggleMutilationSettings(selected_setting){ //TOGGLE A SETTING
+	var setting = settingVars[selected_setting]; //get setting obj from array
+	var state = setting.state; //get state 
+	setting.state = !state; //TOGGLE SETTING STATE
 
 	console.log(selected_setting);
-	console.log("toggled", settingVars[selected_setting].name, setting.state);
+	console.log("toggled", settingVars[selected_setting].name, setting.state); 
 }
 
-/*function labelEvent(){
+/*function labelEvent(){ //UNNECESSARY CODE
 	console.log("label click event!");
 	//var labelID = $(this).attr('for');
 	//$('#'+labelID).trigger('click');
 }*/
 
-function boxEvent(){
+function boxEvent(){ //ON BOX CLICK
 	console.log("box click event!", $(this).attr('id'));
-	var box_id = "#" + $(this).attr('id');
+	var box_id = "#" + $(this).attr('id'); //get ID of box
 	var thisSettingEnum = 0;
-	var settingIDs_length = Object.keys(settingIDs).length;
-	for (var i = 0; i < settingIDs_length; i++){
-		if (box_id == settingIDs[i][1]){
-			console.log(box_id, settingIDs[i][1],i);
-			toggleMutilationSettings(i);
+	var settingIDs_length = Object.keys(settingIDs).length;  //get size of settings array
+	for (var i = 0; i < settingIDs_length; i++){	//FOR EACH SETTING
+		if (box_id == settingIDs[i][1]){				//IF MATCHES BOX ID [can only happen once]
+			console.log(box_id, settingIDs[i][1],i);		
+			toggleMutilationSettings(i);					//TOGGLE THAT SETTING
+			continue;										//no reason to continue
 		}
 	}
-	updateCheckboxes();
+	updateCheckboxes();  //UPDATE
 }
 
 $(document).ready(function(){
 	var settingIDs_length = Object.keys(settingIDs).length;
 	$("#activate").click(nonsenseGen);
-	for (var i = 0; i < settingIDs_length; i++){
+	for (var i = 0; i < settingIDs_length; i++){ //for all settings
 		var temp = settingIDs[i];
 		console.log(temp);
-		for (var j = 0; j <= 1; j++){
-			var input_id = temp[j];
-			console.log(input_id);
-			console.log("j: ", j);
-			//if (j == 0) $(input_id).click(labelEvent);
-			/*else*/ $(input_id).click(boxEvent);
-		}
+		var input_id = temp[1]; //get box ids only
+		console.log(input_id);
+		 $(input_id).click(boxEvent);	//create click event
 	}
-	updateCheckboxes();
-	var lang_select_DOM = $("#lang_select");
-	$.each(language_dict, function(index, subarray) {   
+	updateCheckboxes(); //UPDATE TO ALL BOXES TO DEFAULT CHECKED STATUS
+	var lang_select_DOM = $("#lang_select"); 
+	$.each(language_dict, function(index, subarray) {   //CREATE LANG_SELECT DOM ELEMENT
 		lang_select_DOM
 			.append($("<option></option>")
 				.attr("value",subarray[0])
 				.text(subarray[1])); 
+		//use language_dict to create options in selection element
 	});
-	$("#loading").hide();
+	$("#loading").hide(); //KEEP LOADING GIF HIDDEN BY DEFAULT
 });

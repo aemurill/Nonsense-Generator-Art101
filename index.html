@@ -69,10 +69,10 @@
 				<li><b>Styling (Axel)</b> - I used my previously created HTML & CSS template for this project. Some small updates were necessary to make things look good and stay intact.</li>
 				<li><b>Diacritical Marks and Formatting (Axel)</b> - I borrowed inspiration for the diacritical marks from Tchouk's Zalgo Text Generator. I had this mix with coloration and font-size, each completely randomizing per call. Thus, the output is "mutilated" such that it will have combining marks glued to each character, as well as each character varying in size and color.</li>
 				<li><b>Content Corruption (Will)</b> - Each character from the input is replaced with some string based on character. Certain replacements have random characters mixed in.</li>
-				<li><b>Language Translation (Axel)</b> - the string is sent to Google's translation service and returned. This uses an improper AJAX method, but works very well.</li>
+				<li><b>Language Translation (Axel)</b> - the string is sent to Google's translation service and returned. This uses an improper AJAX method, but works very well. GOOGLE DOES OCCASIONALLY REFUSE TO SERVICE REQUESTS, BUT THIS IS PART OF NOT HAVING PAID 75$ PER HOUR</li>
 				<li><b>Toggle-able Interface (Axel)</b> - All the mutilations can be turned on and off!. Languages can also be selected!</li>
-				<li><b> (Axel)</b> - .</li>
-				<li><b> (Axel)</b> - .</li>
+				<li><b>MutilationObject (Axel)</b> - the string was turned into an object to take advantage of the properties of an object, as well as to make using functions (now methods) even more simple than before. Plus, being able to keep all the relevant data within an object made keeping track of changes easier.</li>
+				<li><b>Message from Will</b> - Comparatively few design changes made by me are present in this final iteration. Axel handled the brunt of the finalization process, but collaborative design endeavors proved fruitful. Input in the form of speculative design bridged the gap between the midterm iteration of this project and its current iteration.</li>
 			</ul>
 		</div>
 		
@@ -91,6 +91,8 @@
 			<p>I hate callbacks. At least, I hate how I was seemingly unable to get the system to wait for the AJAX event to finish before returning a value, rather than just having it call another function. I did this because I did not want to have to break up my flow into chunks just for method called by a function which was just a fraction of the process. As result, I decided to use a SYNCHRONOUS AJAX call, which is high heresy but was required for the functionality I was going for. That and my attempts to make the system wait for an async value kept NOT waiting for the value.</p>
 			<h3>Objectifying the String (Axel & Will)</h3>
 			<p>Turning the mutilated string into an object was tricky in that it required understanding how we were going to use our object. It was ultimately decided that having a MutilationObject contain the current data as well as have methods would be better than simply passing an object to a bunch of unrelated functions.</p>
+			<h3>A Message from Will</h3>
+			<p>Wrapping my head around APIs, and understanding the implementation of both the requirements asked of us from Wes and objectives that our team set forth for the project. The ultimate challenge of continuing this project was trying to continue the vision we had for the midterm, and exploring where we could and should take the project form there. Pondering how we could go about adding features was a bit of a challenge, too, as it was sometimes difficult to communicate exactly what form our project would end up taking..</p>
 		</div>
 
 		<!-- TECH & ACHIEVES -->
@@ -99,7 +101,15 @@
 			<h3>Zalgo Text Generator by Tchouky</h3>
 			<p><a href="http://www.eeemo.net/">Visitable here.</a> This Website was the inspiration and main source of understanding for combining diacritical marks. And while that part of the project is inspired by Techouky, I (Axel) made sure that we were using a different method by which to generate random marks, as so to not just copy. Plus, he made a table for the marks, we generate the marks utterly randomly individually.</p>
 			<h3>StackOverflow's Tod</h3>
-			<p><a href="https://stackoverflow.com/questions/57803/how-to-convert-decimal-to-hexadecimal-in-javascript">Visitable here.</a> The function 'decimalToHexString' was borrowed from here, being massively useful in regards to combining diacritical mark generation. Credit where credit is due, to "Tod".</p>
+			<p><a href="https://stackoverflow.com/questions/57803/how-to-convert-decimal-to-hexadecimal-in-javascript">
+				Visitable here.</a>
+				The function 'decimalToHexString' was borrowed from here, being massively useful in regards to combining diacritical mark generation. Credit where credit is due, to "Tod".</p>
+				<h3>Google Translate API - ACCESS</h3>
+			<p><a href="https://ctrlq.org/code/19909-google-translate-api">
+				Visitable here.</a>
+				I was able to acquire free access to Google's translation API via this person's guide. Otherwise I'd have been unable to do so without paying for private use of it.</p>
+				<h3>Google Translate API - ITSELF</h3>
+			<p>Needed for the translation mutilation function.</p>
 		</div>
 
 		<!-- LINKS -->
